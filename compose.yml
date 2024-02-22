@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+   db:
+    image: sallfarr/db-landtick:v1
+    container_name: db-landtick
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/postgresql:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+   backend:
+    depends_on:
+      - db
+    image: be-landtick:v1
+    container_name: be-landtick
+    stdin_open: true
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+   frontend:
+    image: fe-landtick:v1
+    container_name: fe-landtick
+    stdin_open: true
+    restart: unless-stopped
+    ports:
+      - 5173:5173
